@@ -1,0 +1,13 @@
+{
+  "name": "event-location-registration",
+  "version": "1.0.0",
+  "description": "Event registration with location permission for Render deployment",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}

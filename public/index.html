@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shimla Expedition & Event Registration 2026</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --accent: #38bdf8;
+      --bg-dark: #0f172a;
+      --card-bg: rgba(255, 255, 255, 0.95);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.75)),
+                  url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=1600&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 15px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .sidebar {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.9), rgba(15, 23, 42, 0.95)),
+                  url('https://images.unsplash.com/photo-1597074866923-dc0589150358?q=80&w=800&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 700; }
+    .event-info h1 { font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin: 20px 0 10px 0; }
+    .event-info p { font-size: 0.95rem; color: #e2e8f0; line-height: 1.6; }
+    
+    .highlights { margin-top: 30px; display: flex; flex-direction: column; gap: 12px; }
+    .highlight-item { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; background: rgba(255, 255, 255, 0.1); padding: 10px 14px; border-radius: 12px; }
+
+    .form-section { padding: 40px 35px; display: flex; flex-direction: column; justify-content: center; }
+    .form-header h2 { color: #0f172a; font-size: 1.6rem; font-weight: 700; }
+    .form-header p { color: #64748b; font-size: 0.88rem; margin-top: 4px; margin-bottom: 20px; }
+
+    .location-box { border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; font-size: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .loc-pending { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .loc-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .loc-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+    .input-group { margin-bottom: 16px; }
+    .input-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px; }
+    .input-wrapper { position: relative; }
+    .input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.9rem; }
+    .input-group input, .input-group textarea { width: 100%; padding: 12px 14px 12px 40px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; color: #0f172a; outline: none; }
+    .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); }
+
+    /* Manual Address Section Hidden by default */
+    #manualAddressGroup { display: none; margin-bottom: 16px; background: #f8fafc; padding: 15px; border-radius: 12px; border: 1.5px dashed #cbd5e1; }
+
+    .submit-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; }
+    .submit-btn:hover { background: var(--primary-hover); }
+
+    #responseMessage { margin-top: 15px; text-align: center; font-size: 0.9rem; font-weight: 600; }
+    @media (max-width: 768px) { .container { grid-template-columns: 1fr; } .sidebar { padding: 30px 20px; } .form-section { padding: 30px 20px; } }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="sidebar">
+      <div>
+        <div class="brand">
+          <i class="fa-solid fa-mountain-sun"></i> Shimla Event 2026
+        </div>
+        <div class="event-info">
+          <h1>Explore the Hills of Himachal</h1>
+          <p>We use location or your address to map your participation for nearby event hubs.</p>
+        </div>
+        <div class="highlights">
+          <div class="highlight-item">
+            <i class="fa-solid fa-location-dot" style="color: #38bdf8;"></i>
+            <span>GPS or Manual Address Routing</span>
+          </div>
+        </div>
+      </div>
+      <div style="font-size: 0.8rem; color: #94a3b8;">
+        <i class="fa-solid fa-lock"></i> Secure & Encrypted Data Handling
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-header">
+        <h2>Event Registration</h2>
+        <p>Checking location permissions...</p>
+      </div>
+
+      <div id="locationStatus" class="location-box loc-pending">
+        <div>
+          <i class="fa-solid fa-compass fa-spin" style="margin-right: 6px;"></i>
+          <span id="locText">Detecting GPS location...</span>
+        </div>
+      </div>
+
+      <form id="regForm">
+        <div class="input-group">
+          <label for="name">Full Name *</label>
+          <div class="input-wrapper">
+            <i class="fa-regular fa-user"></i>
+            <input type="text" id="name" required placeholder="e.g. Abhishek Bharti" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email Address *</label>
+          <div class="input-wrapper">
+            <i class="fa-regular fa-envelope"></i>
+            <input type="email" id="email" required placeholder="name@example.com" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="phone">Phone Number *</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-phone"></i>
+            <input type="tel" id="phone" required placeholder="+91 98765 43210" />
+          </div>
+        </div>
+
+        <!-- FALLBACK MANUAL ADDRESS SECTION (Appears only if GPS fails) -->
+        <div id="manualAddressGroup">
+          <label for="manualAddress" style="font-size: 0.85rem; font-weight: 600; color: #b91c1c; display: block; margin-bottom: 6px;">
+            <i class="fa-solid fa-triangle-exclamation"></i> GPS unavailable. Please enter your City/Address manually *
+          </label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-map-pin" style="top: 50%;"></i>
+            <input type="text" id="manualAddress" placeholder="e.g. Etah, Uttar Pradesh or Shimla Mall Road" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="query">Event Queries / Requirements</label>
+          <div class="input-wrapper">
+            <i class="fa-regular fa-comment-dots" style="top: 20px;"></i>
+            <textarea id="query" rows="2" placeholder="Any specific travel plans?"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="submit-btn">
+          <span>Complete Registration</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <div id="responseMessage"></div>
+    </div>
+  </div>
+
+  <script>
+    let userLocation = null;
+    const locationStatus = document.getElementById('locationStatus');
+    const locText = document.getElementById('locText');
+    const manualAddressGroup = document.getElementById('manualAddressGroup');
+    const manualAddressInput = document.getElementById('manualAddress');
+
+    function fetchLocation() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            userLocation = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              accuracy: position.coords.accuracy
+            };
+            locationStatus.className = "location-box loc-success";
+            locText.innerHTML = `<i class="fa-solid fa-circle-check" style="margin-right: 6px;"></i> GPS Location captured successfully!`;
+            manualAddressGroup.style.display = "none";
+            manualAddressInput.required = false;
+          },
+          (error) => {
+            // GPS failed or denied -> Show manual address field
+            locationStatus.className = "location-box loc-error";
+            locText.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> GPS blocked/failed. Please enter address below.`;
+            manualAddressGroup.style.display = "block";
+            manualAddressInput.required = true;
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      } else {
+        locationStatus.className = "location-box loc-error";
+        locText.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Geolocation not supported. Please enter address below.`;
+        manualAddressGroup.style.display = "block";
+        manualAddressInput.required = true;
+      }
+    }
+
+    window.onload = () => {
+      fetchLocation();
+    };
+
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const responseMessage = document.getElementById('responseMessage');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Submitting...`;
+
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        query: document.getElementById('query').value,
+        location: userLocation,
+        manualAddress: manualAddressInput.value || null
+      };
+
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          responseMessage.style.color = "#166534";
+          responseMessage.innerHTML = `<i class="fa-solid fa-circle-check"></i> Registration Successful! See you at the event.`;
+          document.getElementById('regForm').reset();
+          // Reset location state if needed
+        } else {
+          responseMessage.style.color = "#991b1b";
+          responseMessage.innerText = result.message || "Something went wrong.";
+        }
+      } catch (err) {
+        responseMessage.style.color = "#991b1b";
+        responseMessage.innerText = "Network error. Please try again!";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Complete Registration</span> <i class="fa-solid fa-arrow-right"></i>`;
+      }
+    });
+  </script>
+</body>
+</html>
