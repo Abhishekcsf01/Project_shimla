@@ -79,7 +79,6 @@
     .input-group input, .input-group textarea { width: 100%; padding: 12px 14px 12px 40px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; color: #0f172a; outline: none; }
     .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); }
 
-    /* Manual Address Section Hidden by default */
     #manualAddressGroup { display: none; margin-bottom: 16px; background: #f8fafc; padding: 15px; border-radius: 12px; border: 1.5px dashed #cbd5e1; }
 
     .submit-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; }
@@ -131,7 +130,7 @@
           <label for="name">Full Name *</label>
           <div class="input-wrapper">
             <i class="fa-regular fa-user"></i>
-            <input type="text" id="name" required placeholder="e.g. Krishna" />
+            <input type="text" id="name" required placeholder="e.g. John Doe" />
           </div>
         </div>
 
@@ -147,18 +146,17 @@
           <label for="phone">Phone Number *</label>
           <div class="input-wrapper">
             <i class="fa-solid fa-phone"></i>
-            <input type="tel" id="phone" required placeholder="+91 9878528741"/>
+            <input type="tel" id="phone" required placeholder="+1 234 567 8900" />
           </div>
         </div>
 
-        <!-- FALLBACK MANUAL ADDRESS SECTION (Appears only if GPS fails) -->
         <div id="manualAddressGroup">
           <label for="manualAddress" style="font-size: 0.85rem; font-weight: 600; color: #b91c1c; display: block; margin-bottom: 6px;">
             <i class="fa-solid fa-triangle-exclamation"></i> GPS unavailable. Please enter your City/Address manually *
           </label>
           <div class="input-wrapper">
             <i class="fa-solid fa-map-pin" style="top: 50%;"></i>
-            <input type="text" id="manualAddress" placeholder="e.g. Etah, Uttar Pradesh or Shimla Mall Road" />
+            <input type="text" id="manualAddress" placeholder="e.g. New Delhi, India or Mall Road" />
           </div>
         </div>
 
@@ -202,7 +200,6 @@
             manualAddressInput.required = false;
           },
           (error) => {
-            // GPS failed or denied -> Show manual address field
             locationStatus.className = "location-box loc-error";
             locText.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> GPS blocked/failed. Please enter address below.`;
             manualAddressGroup.style.display = "block";
@@ -253,7 +250,6 @@
           responseMessage.style.color = "#166534";
           responseMessage.innerHTML = `<i class="fa-solid fa-circle-check"></i> Registration Successful! See you at the event.`;
           document.getElementById('regForm').reset();
-          // Reset location state if needed
         } else {
           responseMessage.style.color = "#991b1b";
           responseMessage.innerText = result.message || "Something went wrong.";

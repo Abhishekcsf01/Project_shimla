@@ -12,6 +12,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const DATA_FILE = path.join(__dirname, 'registrations.json');
 
+// Helper: Escape HTML to prevent XSS attacks in Admin panel
+const escapeHtml = (str) => {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+};
+
 const loadData = () => {
   if (!fs.existsSync(DATA_FILE)) return [];
   try {
@@ -26,7 +37,34 @@ const saveData = (data) => {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 };
 
-// API Route: Handle Registration
+// 🔐 Secure Admin Authentication via Environment Variables
+const adminAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access Required"');
+    return res.status(401).send('Authentication required.');
+  }
+
+  const base64Credentials = authHeader.split(' ')[1];
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+  const [username, password] = credentials.split(':');
+
+  const ADMIN_USER = process.env.ADMIN_USER;
+  const ADMIN_PASS = process.env.ADMIN_PASS;
+
+  if (!ADMIN_USER || !ADMIN_PASS) {
+    return res.status(500).send('Server configuration error: Admin credentials are not set in environment variables.');
+  }
+
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    return next();
+  } else {
+    res.setHeader('WWW-Authenticate', 'Basic realm="Admin Access Required"');
+    return res.status(401).send('Invalid username or password.');
+  }
+};
+
+// API Route: Handle Registration with basic input validation
 app.post('/api/register', (req, res) => {
   const { name, email, phone, query, location, manualAddress } = req.body;
 
@@ -43,16 +81,16 @@ app.post('/api/register', (req, res) => {
 
   const newEntry = {
     id: Date.now(),
-    name,
-    email,
-    phone,
-    query: query || 'N/A',
+    name: escapeHtml(name),
+    email: escapeHtml(email),
+    phone: escapeHtml(phone),
+    query: escapeHtml(query || 'N/A'),
     locationType: hasLocation ? 'GPS Coordinates' : 'Manual Address',
     locationDetails: {
       latitude: hasLocation ? location.latitude : 'N/A',
       longitude: hasLocation ? location.longitude : 'N/A',
       accuracyMeters: hasLocation ? location.accuracy : 'N/A',
-      manualAddress: manualAddress || 'N/A'
+      manualAddress: escapeHtml(manualAddress || 'N/A')
     },
     googleMapsLink: mapsUrl || (manualAddress ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(manualAddress)}` : 'Location Not Provided'),
     registeredAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
@@ -64,14 +102,14 @@ app.post('/api/register', (req, res) => {
   res.status(200).json({ success: true, message: 'Registration successful!', data: newEntry });
 });
 
-// Admin Submissions JSON API
-app.get('/api/admin/submissions', (req, res) => {
+// Protected Admin Submissions JSON API
+app.get('/api/admin/submissions', adminAuth, (req, res) => {
   const registrations = loadData();
   res.json({ totalEntries: registrations.length, data: registrations });
 });
 
-// Admin Dashboard View
-app.get('/admin', (req, res) => {
+// Protected Admin Dashboard View with XSS Escaping
+app.get('/admin', adminAuth, (req, res) => {
   const registrations = loadData();
   
   let rows = registrations.map((item, index) => `
